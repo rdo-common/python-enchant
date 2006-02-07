@@ -1,8 +1,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-enchant
-Version:        1.1.3
-Release:        3%{?dist}
+Version:        1.1.5
+Release:        1%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -12,6 +12,7 @@ Source0:        http://dl.sourceforge.net/sourceforge/pyenchant/pyenchant-%{vers
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  python-devel enchant-devel
+BuildRequires:  python-setuptools >= 0:0.6a9
 Requires:   python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
 
 Provides:       PyEnchant
@@ -31,7 +32,8 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT
+%{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --single-version-externally-managed
+rm -rf $RPM_BUILD_ROOT/%{python_sitearch}/*.egg-info
 
  
 %clean
@@ -54,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Feb 04 2006 Roozbeh Pournader <roozbeh@farsiweb.info> - 1.1.5-1
+- Update to 1.1.5
+
 * Wed Feb 01 2006 Roozbeh Pournader <roozbeh@farsiweb.info> - 1.1.3-3
 - Use %%{python_sitearch} instead of %%{python_sitelib} (for x86_64)
 
