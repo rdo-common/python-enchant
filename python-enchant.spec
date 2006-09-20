@@ -2,7 +2,7 @@
 
 Name:           python-enchant
 Version:        1.1.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -13,7 +13,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  python-devel enchant-devel
 BuildRequires:  python-setuptools >= 0:0.6a9
-Requires:   python-abi = %(%{__python} -c "import sys ; print sys.version[:3]")
 
 Provides:       PyEnchant
 
@@ -47,15 +46,17 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{python_sitearch}/enchant/checker
 %dir %{python_sitearch}/enchant/tokenize
 %{python_sitearch}/enchant/*.py
-%{python_sitearch}/enchant/*.pyc
-%ghost %{python_sitearch}/enchant/*.pyo
+%{python_sitearch}/enchant/*.py[co]
 %{python_sitearch}/enchant/*/*.py
-%{python_sitearch}/enchant/*/*.pyc
-%ghost %{python_sitearch}/enchant/*/*.pyo
+%{python_sitearch}/enchant/*/*.py[co]
 %{python_sitearch}/enchant/_enchant.so
 
 
 %changelog
+* Wed Sep 20 2006 José Matos <jamatos[AT]fc.up.pt> - 1.1.5-4
+- Rebuild for FC-6.
+- Unghost .pyo files.
+
 * Tue Feb 14 2006 Roozbeh Pournader <roozbeh@farsiweb.info> - 1.1.5-3
 - Rebuild for Fedora Extras 5
 
