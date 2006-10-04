@@ -2,7 +2,7 @@
 
 Name:           python-enchant
 Version:        1.1.5
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -53,6 +53,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Oct 05 2006 Christian Iseli <Christian.Iseli@licr.org> 1.1.5-5
+ - rebuilt for unwind info generation, broken in gcc-4.1.1-21
+
 * Wed Sep 20 2006 José Matos <jamatos[AT]fc.up.pt> - 1.1.5-4
 - Rebuild for FC-6.
 - Unghost .pyo files.
