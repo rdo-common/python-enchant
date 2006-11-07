@@ -1,8 +1,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-enchant
-Version:        1.1.5
-Release:        5%{?dist}
+Version:        1.2.0
+Release:        1%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -53,6 +53,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov  7 2006 José Matos <jamatos[AT]fc.up.pt> - 1.2.0-1
+- New upstream release
+
 * Thu Oct 05 2006 Christian Iseli <Christian.Iseli@licr.org> 1.1.5-5
  - rebuilt for unwind info generation, broken in gcc-4.1.1-21
 
