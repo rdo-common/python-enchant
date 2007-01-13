@@ -1,8 +1,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-enchant
-Version:        1.2.0
-Release:        2%{?dist}
+Version:        1.3.0
+Release:        1%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -41,7 +41,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE.txt README.txt
+%doc ChangeLog LICENSE.txt README.txt TODO.txt
 %dir %{python_sitearch}/enchant
 %dir %{python_sitearch}/enchant/checker
 %dir %{python_sitearch}/enchant/tokenize
@@ -53,6 +53,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat Jan 13 2007 Roozbeh Pournader <roozbeh@farsiweb.info> - 1.3.0-1
+- Update to 1.3.0
+- Add ChangeLog and TODO.txt as documentation
+
 * Sat Dec 09 2006 Roozbeh Pournader <roozbeh@farsiweb.info> - 1.2.0-2
 - Rebuild for Python 2.5
 
