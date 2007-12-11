@@ -1,12 +1,12 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-enchant
-Version:        1.3.0
+Version:        1.3.1
 Release:        1%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
-License:        LGPL
+License:        LGPLv2+
 URL:            http://pyenchant.sourceforge.net/
 Source0:        http://dl.sourceforge.net/sourceforge/pyenchant/pyenchant-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -53,6 +53,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Dec 11 2007 Roozbeh Pournader <roozbeh@farsiweb.info> - 1.3.1-1
+- Update to 1.3.1
+- Change license tag to LGPLv2+
+
 * Sat Jan 13 2007 Roozbeh Pournader <roozbeh@farsiweb.info> - 1.3.0-1
 - Update to 1.3.0
 - Add ChangeLog and TODO.txt as documentation
