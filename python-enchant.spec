@@ -2,7 +2,7 @@
 
 Name:           python-enchant
 Version:        1.3.1
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -13,6 +13,9 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  python-devel enchant-devel
 BuildRequires:  python-setuptools >= 0:0.6a9
+# Work around a problem with libenchant versioning
+# (python-enchant-1.3.1 failed to work with enchant-1.4.2-2.fc10)
+Requires:	enchant >= 1.5.0
 
 Provides:       PyEnchant
 
@@ -53,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Feb  1 2010 Stepan Kasal <skasal@redhat.com> - 1.3.1-6
+- add a require to work around a problem with libenchant versioning
+
 * Sun Jul 26 2009 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_12_Mass_Rebuild
 
