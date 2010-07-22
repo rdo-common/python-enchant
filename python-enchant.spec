@@ -2,7 +2,7 @@
 
 Name:           python-enchant
 Version:        1.3.1
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -56,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jul 22 2010 David Malcolm <dmalcolm@redhat.com> - 1.3.1-7
+- Rebuilt for https://fedoraproject.org/wiki/Features/Python_2.7/MassRebuild
+
 * Mon Feb  1 2010 Stepan Kasal <skasal@redhat.com> - 1.3.1-6
 - add a require to work around a problem with libenchant versioning
 
