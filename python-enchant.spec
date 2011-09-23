@@ -16,6 +16,8 @@ BuildRequires:  python-setuptools >= 0:0.6a9
 # (python-enchant-1.3.1 failed to work with enchant-1.4.2-2.fc10)
 Requires:       enchant >= 1.5.0
 
+Obsoletes:      python-enchant < 1.6.5
+
 Provides:       PyEnchant
 
 %description
@@ -63,6 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 - Change python_sitearch to python_sitelib
 - Changelog in no longer in source tarball
 - Remove nonpacked files
+- Obsolete old arch-specific verion
 
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
