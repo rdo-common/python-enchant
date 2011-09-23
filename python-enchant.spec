@@ -1,8 +1,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
 Name:           python-enchant
-Version:        1.3.1
-Release:        8%{?dist}
+Version:        1.6.5
+Release:        1%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -56,6 +56,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Sep 23 2011 Radek Novacek <rnovacek@redhat.com> 1.6.5-1
+- Update to version 1.6.5
+
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
 
