@@ -1,6 +1,6 @@
 Name:           python-enchant
 Version:        1.6.5
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -16,6 +16,7 @@ BuildRequires:  python-setuptools >= 0:0.6a9
 # (python-enchant-1.3.1 failed to work with enchant-1.4.2-2.fc10)
 Requires:       enchant >= 1.5.0
 
+# Package was arch specific before
 Obsoletes:      python-enchant < 1.6.5
 
 Provides:       PyEnchant
@@ -59,13 +60,15 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Sep 23 2011 Radek Novacek <rnovacek@redhat.com> 1.6.5-2
+- Obsolete old arch-specific version
+
 * Fri Sep 23 2011 Radek Novacek <rnovacek@redhat.com> 1.6.5-1
 - Update to version 1.6.5
 - Change architecture to noarch
 - Change python_sitearch to python_sitelib
 - Changelog in no longer in source tarball
 - Remove nonpacked files
-- Obsolete old arch-specific verion
 
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
