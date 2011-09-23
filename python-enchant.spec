@@ -1,5 +1,3 @@
-%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
 Name:           python-enchant
 Version:        1.6.5
 Release:        1%{?dist}
@@ -11,11 +9,12 @@ URL:            http://pyenchant.sourceforge.net/
 Source0:        http://dl.sourceforge.net/sourceforge/pyenchant/pyenchant-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  python-devel enchant-devel
+BuildArch:      noarch
+BuildRequires:  python2-devel enchant-devel
 BuildRequires:  python-setuptools >= 0:0.6a9
 # Work around a problem with libenchant versioning
 # (python-enchant-1.3.1 failed to work with enchant-1.4.2-2.fc10)
-Requires:	enchant >= 1.5.0
+Requires:       enchant >= 1.5.0
 
 Provides:       PyEnchant
 
@@ -35,29 +34,35 @@ CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --single-version-externally-managed
-rm -rf $RPM_BUILD_ROOT/%{python_sitearch}/*.egg-info
+rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/*.egg-info
+# Directories used in windows build
+rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/enchant/lib
+rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/enchant/share
 
- 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 
 %files
 %defattr(-,root,root,-)
-%doc ChangeLog LICENSE.txt README.txt TODO.txt
-%dir %{python_sitearch}/enchant
-%dir %{python_sitearch}/enchant/checker
-%dir %{python_sitearch}/enchant/tokenize
-%{python_sitearch}/enchant/*.py
-%{python_sitearch}/enchant/*.py[co]
-%{python_sitearch}/enchant/*/*.py
-%{python_sitearch}/enchant/*/*.py[co]
-%{python_sitearch}/enchant/_enchant.so
+%doc LICENSE.txt README.txt TODO.txt
+%dir %{python_sitelib}/enchant
+%dir %{python_sitelib}/enchant/checker
+%dir %{python_sitelib}/enchant/tokenize
+%{python_sitelib}/enchant/*.py
+%{python_sitelib}/enchant/*.py[co]
+%{python_sitelib}/enchant/*/*.py
+%{python_sitelib}/enchant/*/*.py[co]
 
 
 %changelog
 * Fri Sep 23 2011 Radek Novacek <rnovacek@redhat.com> 1.6.5-1
 - Update to version 1.6.5
+- Change architecture to noarch
+- Change python_sitearch to python_sitelib
+- Changelog in no longer in source tarball
+- Remove nonpacked files
 
 * Tue Feb 08 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.1-8
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
