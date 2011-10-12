@@ -1,6 +1,8 @@
+%global with_python3 1
+
 Name:           python-enchant
 Version:        1.6.5
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -10,8 +12,18 @@ Source0:        http://dl.sourceforge.net/sourceforge/pyenchant/pyenchant-%{vers
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
-BuildRequires:  python2-devel enchant-devel
+BuildRequires:  enchant-devel
+
+# Python 2 build requirements:
+BuildRequires:  python2-devel
 BuildRequires:  python-setuptools >= 0:0.6a9
+
+# Python 3 build requirements:
+%if 0%{?with_python3}
+BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools >= 0:0.6a9
+%endif # if with_python3
+
 # Work around a problem with libenchant versioning
 # (python-enchant-1.3.1 failed to work with enchant-1.4.2-2.fc10)
 Requires:       enchant >= 1.5.0
@@ -25,17 +37,47 @@ Provides:       PyEnchant
 PyEnchant is a spellchecking library for Python, based on the Enchant
 library by Dom Lachowicz.
 
+%if 0%{?with_python3}
+%package -n python3-enchant
+Summary:        Python 3 bindings for Enchant spellchecking library
+Group:          Development/Languages
+
+%description -n python3-enchant
+PyEnchant is a spellchecking library for Python 3, based on the Enchant
+library by Dom Lachowicz.
+%endif # with_python3
 
 %prep
 %setup -q -n pyenchant-%{version}
+
+%if 0%{?with_python3}
+rm -rf %{py3dir}
+cp -a . %{py3dir}
+find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
+%endif # with_python3
 
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" %{__python} setup.py build
 
+%if 0%{?with_python3}
+pushd %{py3dir}
+CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
+popd
+%endif # with_python3
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
+%if 0%{?with_python3}
+pushd %{py3dir}
+%{__python3} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --single-version-externally-managed
+rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/*.egg-info
+# Directories used in windows build
+rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/enchant/lib
+rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/enchant/share
+popd
+%endif # with_python3
 %{__python} setup.py install -O1 --skip-build --root $RPM_BUILD_ROOT --single-version-externally-managed
 rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/*.egg-info
 # Directories used in windows build
@@ -58,8 +100,29 @@ rm -rf $RPM_BUILD_ROOT
 %{python_sitelib}/enchant/*/*.py
 %{python_sitelib}/enchant/*/*.py[co]
 
+%if 0%{?with_python3}
+%files -n python3-enchant
+%defattr(-,root,root,-)
+%doc LICENSE.txt README.txt TODO.txt
+%dir %{python3_sitelib}/enchant
+%dir %{python3_sitelib}/enchant/__pycache__
+%dir %{python3_sitelib}/enchant/checker
+%dir %{python3_sitelib}/enchant/checker/__pycache__
+%dir %{python3_sitelib}/enchant/tokenize
+%dir %{python3_sitelib}/enchant/tokenize/__pycache__
+%{python3_sitelib}/enchant/*.py
+%{python3_sitelib}/enchant/__pycache__/*.py[co]
+%{python3_sitelib}/enchant/checker/*.py
+%{python3_sitelib}/enchant/checker/__pycache__/*.py[co]
+%{python3_sitelib}/enchant/tokenize/*.py
+%{python3_sitelib}/enchant/tokenize/__pycache__/*.py[co]
+%endif # with_python3
+
 
 %changelog
+* Mon Oct 10 2011 David Malcolm <dmalcolm@redhat.com> - 1.6.5-3
+- add python3 subpackage
+
 * Fri Sep 23 2011 Radek Novacek <rnovacek@redhat.com> 1.6.5-2
 - Obsolete old arch-specific version
 
