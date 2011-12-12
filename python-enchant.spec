@@ -2,7 +2,7 @@
 
 Name:           python-enchant
 Version:        1.6.5
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -120,6 +120,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Dec 12 2011 Radek Novacek <rnovacek@redhat.com> 1.6.5-4
+- Release bump to ensure upgrade path from F16
+
 * Mon Oct 10 2011 David Malcolm <dmalcolm@redhat.com> - 1.6.5-3
 - add python3 subpackage
 
