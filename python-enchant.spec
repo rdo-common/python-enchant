@@ -2,13 +2,13 @@
 
 Name:           python-enchant
 Version:        1.6.5
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
 License:        LGPLv2+
-URL:            http://pyenchant.sourceforge.net/
-Source0:        http://dl.sourceforge.net/sourceforge/pyenchant/pyenchant-%{version}.tar.gz
+URL:            http://packages.python.org/pyenchant/
+Source0:        http://pypi.python.org/packages/source/p/pyenchant/pyenchant-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -120,6 +120,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Oct 31 2012 Radek Novacek <rnovacek@redhat.com> 1.6.5-8
+- Fix upstream url and source url
+
 * Sat Aug 04 2012 David Malcolm <dmalcolm@redhat.com> - 1.6.5-7
 - rebuild for https://fedoraproject.org/wiki/Features/Python_3.3
 
