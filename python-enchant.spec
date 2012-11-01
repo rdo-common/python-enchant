@@ -2,7 +2,7 @@
 
 Name:           python-enchant
 Version:        1.6.5
-Release:        8%{?dist}
+Release:        9%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -11,17 +11,24 @@ URL:            http://packages.python.org/pyenchant/
 Source0:        http://pypi.python.org/packages/source/p/pyenchant/pyenchant-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
+Patch0:         python-enchant-1.6.5-fix-tests-without-X.patch
+Patch1:         python-enchant-1.6.5-fix-docstring-test.patch
+
 BuildArch:      noarch
 BuildRequires:  enchant-devel
 
 # Python 2 build requirements:
 BuildRequires:  python2-devel
 BuildRequires:  python-setuptools >= 0:0.6a9
+# For running tests
+BuildRequires:  python-nose
 
 # Python 3 build requirements:
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools >= 0:0.6a9
+# For running tests
+BuildRequires:  python3-nose
 %endif # if with_python3
 
 # Work around a problem with libenchant versioning
@@ -49,6 +56,8 @@ library by Dom Lachowicz.
 
 %prep
 %setup -q -n pyenchant-%{version}
+%patch0 -p1 -b .fix-tests-without-X
+%patch1 -p1 -b .fix-docstring-test
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -84,6 +93,18 @@ rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/*.egg-info
 rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/enchant/lib
 rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/enchant/share
 
+%check
+pushd $RPM_BUILD_ROOT/%{python_sitelib}
+# There is no dictionary for language C, need to use en_US
+LANG=en_US.UTF-8 /usr/bin/nosetests
+popd
+
+%if 0%{?with_python3}
+pushd $RPM_BUILD_ROOT/%{python3_sitelib}
+# There is no dictionary for language C, need to use en_US
+LANG=en_US.UTF-8 /usr/bin/nosetests-3*
+popd
+%endif # with python3
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -120,6 +141,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Nov 01 2012 Radek Novacek <rnovacek@redhat.com> 1.6.5-9
+- Enable tests in %check
+
 * Wed Oct 31 2012 Radek Novacek <rnovacek@redhat.com> 1.6.5-8
 - Fix upstream url and source url
 
