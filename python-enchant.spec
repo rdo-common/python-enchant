@@ -2,7 +2,7 @@
 
 Name:           python-enchant
 Version:        1.6.5
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -13,6 +13,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Patch0:         python-enchant-1.6.5-fix-tests-without-X.patch
 Patch1:         python-enchant-1.6.5-fix-docstring-test.patch
+# python-distribute got merged into python-setuptools
+Patch2:         python-enchant-1.6.5-disable-distribute-setup.patch
 
 BuildArch:      noarch
 BuildRequires:  enchant-devel
@@ -56,6 +58,7 @@ library by Dom Lachowicz.
 %setup -q -n pyenchant-%{version}
 %patch0 -p1 -b .fix-tests-without-X
 %patch1 -p1 -b .fix-docstring-test
+%patch2 -p1 -b .disable-distribute-setup
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -135,6 +138,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 06 2013 Radek Novacek <rnovacek@redhat.com> 1.6.5-12
+- Disable distribute setup
+
 * Sun Aug 04 2013 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.6.5-11
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_20_Mass_Rebuild
 
