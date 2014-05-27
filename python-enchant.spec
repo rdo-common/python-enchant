@@ -2,7 +2,7 @@
 
 Name:           python-enchant
 Version:        1.6.5
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -138,6 +138,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed May 28 2014 Kalev Lember <kalevlember@gmail.com> - 1.6.5-13
+- Rebuilt for https://fedoraproject.org/wiki/Changes/Python_3.4
+
 * Tue Aug 06 2013 Radek Novacek <rnovacek@redhat.com> 1.6.5-12
 - Disable distribute setup
 
