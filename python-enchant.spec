@@ -1,8 +1,8 @@
 %global with_python3 1
 
 Name:           python-enchant
-Version:        1.6.5
-Release:        14%{?dist}
+Version:        1.6.6
+Release:        1%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -10,11 +10,6 @@ License:        LGPLv2+
 URL:            http://packages.python.org/pyenchant/
 Source0:        http://pypi.python.org/packages/source/p/pyenchant/pyenchant-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
-Patch0:         python-enchant-1.6.5-fix-tests-without-X.patch
-Patch1:         python-enchant-1.6.5-fix-docstring-test.patch
-# python-distribute got merged into python-setuptools
-Patch2:         python-enchant-1.6.5-disable-distribute-setup.patch
 
 BuildArch:      noarch
 BuildRequires:  enchant-devel
@@ -29,6 +24,8 @@ BuildRequires:  python-nose
 %if 0%{?with_python3}
 BuildRequires:  python3-devel
 BuildRequires:  python3-setuptools >= 0:0.6a9
+# For running tests
+BuildRequires:  python3-nose
 %endif # if with_python3
 
 # Work around a problem with libenchant versioning
@@ -56,9 +53,6 @@ library by Dom Lachowicz.
 
 %prep
 %setup -q -n pyenchant-%{version}
-%patch0 -p1 -b .fix-tests-without-X
-%patch1 -p1 -b .fix-docstring-test
-%patch2 -p1 -b .disable-distribute-setup
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -97,11 +91,15 @@ rm -rf $RPM_BUILD_ROOT/%{python_sitelib}/enchant/share
 %check
 pushd $RPM_BUILD_ROOT/%{python_sitelib}
 # There is no dictionary for language C, need to use en_US
-LANG=en_US.UTF-8 /usr/bin/nosetests
+LANG=en_US.UTF-8 /usr/bin/nosetests-2.*
 popd
 
 # Tests are failing in python3 because of collision between 
 # local and stdlib tokenize module
+pushd $RPM_BUILD_ROOT/%{python3_sitelib}
+# There is no dictionary for language C, need to use en_US
+LANG=en_US.UTF-8 /usr/bin/nosetests-3.*
+popd
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -138,6 +136,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 26 2015 Radek Novacek <rnovacek@redhat.com> 1.6.6-1
+- Update to 1.6.6
+- Enable python3 tests in the check section
+
 * Sat Jun 07 2014 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.6.5-14
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_21_Mass_Rebuild
 
