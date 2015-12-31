@@ -1,8 +1,12 @@
 %global with_python3 1
 
+# Work around a problem with libenchant versioning
+# (python-enchant-1.3.1 failed to work with enchant-1.4.2-2.fc10)
+%global enchant_dep enchant >= 1.5.0
+
 Name:           python-enchant
 Version:        1.6.6
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
@@ -28,9 +32,7 @@ BuildRequires:  python3-setuptools >= 0:0.6a9
 BuildRequires:  python3-nose
 %endif # if with_python3
 
-# Work around a problem with libenchant versioning
-# (python-enchant-1.3.1 failed to work with enchant-1.4.2-2.fc10)
-Requires:       enchant >= 1.5.0
+Requires:       %{enchant_dep}
 
 # Package was arch specific before
 Obsoletes:      python-enchant < 1.6.5
@@ -45,6 +47,7 @@ library by Dom Lachowicz.
 %package -n python3-enchant
 Summary:        Python 3 bindings for Enchant spellchecking library
 Group:          Development/Languages
+Requires:       %{enchant_dep}
 
 %description -n python3-enchant
 PyEnchant is a spellchecking library for Python 3, based on the Enchant
@@ -94,8 +97,6 @@ pushd $RPM_BUILD_ROOT/%{python_sitelib}
 LANG=en_US.UTF-8 /usr/bin/nosetests-2.*
 popd
 
-# Tests are failing in python3 because of collision between 
-# local and stdlib tokenize module
 pushd $RPM_BUILD_ROOT/%{python3_sitelib}
 # There is no dictionary for language C, need to use en_US
 LANG=en_US.UTF-8 /usr/bin/nosetests-3.*
@@ -136,6 +137,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Dec 31 2015 Ville Skyttä <ville.skytta@iki.fi> - 1.6.6-5
+- Add dependency on enchant to python3 subpackage
+
 * Tue Nov 10 2015 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.6.6-4
 - Rebuilt for https://fedoraproject.org/wiki/Changes/python3.5
 
@@ -165,7 +169,7 @@ rm -rf $RPM_BUILD_ROOT
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
 
 * Thu Nov 01 2012 Radek Novacek <rnovacek@redhat.com> 1.6.5-9
-- Enable tests in %check
+- Enable tests in %%check
 
 * Wed Oct 31 2012 Radek Novacek <rnovacek@redhat.com> 1.6.5-8
 - Fix upstream url and source url
