@@ -1,0 +1,29 @@
+From ab4930e371ab168b74d8becdac0517c369931a88 Mon Sep 17 00:00:00 2001
+From: six <brbsix@gmail.com>
+Date: Sun, 3 May 2015 07:54:40 -0700
+Subject: [PATCH] Fix TypeError at shutdown.
+
+---
+ enchant/__init__.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/enchant/__init__.py b/enchant/__init__.py
+index cc77eba..eb8079c 100644
+--- a/enchant/__init__.py
++++ b/enchant/__init__.py
+@@ -240,8 +240,11 @@ class Broker(_EnchantObject):
+ 
+     def __del__(self):
+         """Broker object destructor."""
+-        if _e is not None:
++        # Calling free() might fail if python is shutting down
++        try:
+             self._free()
++        except (AttributeError, TypeError):
++            pass
+ 
+     def __getstate__(self):
+         state = super(Broker,self).__getstate__()
+-- 
+2.5.0
+

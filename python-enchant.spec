@@ -6,13 +6,14 @@
 
 Name:           python-enchant
 Version:        1.6.6
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 Group:          Development/Languages
 License:        LGPLv2+
 URL:            http://packages.python.org/pyenchant/
 Source0:        http://pypi.python.org/packages/source/p/pyenchant/pyenchant-%{version}.tar.gz
+Patch0:         0001-Fix-TypeError-at-shutdown.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -56,6 +57,7 @@ library by Dom Lachowicz.
 
 %prep
 %setup -q -n pyenchant-%{version}
+%patch0 -p1
 
 %if 0%{?with_python3}
 rm -rf %{py3dir}
@@ -137,6 +139,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 10 2016 David Shea <dshea@redhat.com> - 1.6.6-7
+- Fix TypeError at shutdown
+
 * Thu Feb 04 2016 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.6-6
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_24_Mass_Rebuild
 
