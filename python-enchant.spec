@@ -5,7 +5,7 @@
 
 Name:           python-enchant
 Version:        1.6.8
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 License:        LGPLv2+
@@ -125,6 +125,9 @@ popd
 
 
 %changelog
+* Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 1.6.8-2
+- Rebuild for Python 3.6
+
 * Tue Nov 22 2016 Charalampos Stratakis <cstratak@redhat.com> - 1.6.8-1
 - Update to 1.6.8
 
