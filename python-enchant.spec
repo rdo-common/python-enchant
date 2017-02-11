@@ -5,7 +5,7 @@
 
 Name:           python-enchant
 Version:        1.6.8
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 License:        LGPLv2+
@@ -125,6 +125,9 @@ popd
 
 
 %changelog
+* Sat Feb 11 2017 Fedora Release Engineering <releng@fedoraproject.org> - 1.6.8-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Mon Dec 19 2016 Miro Hrončok <mhroncok@redhat.com> - 1.6.8-2
 - Rebuild for Python 3.6
 
