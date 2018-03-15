@@ -3,9 +3,16 @@
 %global enchant_dep enchant >= 1.5.0
 %global srcname enchant
 
+%if 0%{?rhel} > 7
+# Disable python2 build by default
+%bcond_with python2
+%else
+%bcond_without python2
+%endif
+
 Name:           python-enchant
 Version:        2.0.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 License:        LGPLv2+
@@ -19,6 +26,7 @@ BuildRequires:  enchant-devel
 PyEnchant is a spellchecking library for Python, based on the Enchant
 library by Dom Lachowicz.
 
+%if %{with python2}
 %package -n python2-%{srcname}
 Summary:        Python 2 bindings for Enchant spellchecking library
 
@@ -36,6 +44,7 @@ Provides:       PyEnchant
 %description -n python2-%{srcname}
 PyEnchant is a spellchecking library for Python 2, based on the Enchant
 library by Dom Lachowicz.
+%endif # with python2
 
 %package -n python3-%{srcname}
 Summary:        Python 3 bindings for Enchant spellchecking library
@@ -63,7 +72,9 @@ cp -a . %{py3dir}
 find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
 
 %build
+%if %{with python2}
 CFLAGS="$RPM_OPT_FLAGS" %py2_build
+%endif # with python2
 
 pushd %{py3dir}
 CFLAGS="$RPM_OPT_FLAGS" %py3_build
@@ -77,23 +88,28 @@ pushd %{py3dir}
 rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/%{srcname}/lib
 rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/%{srcname}/share
 popd
+%if %{with python2}
 %py2_install \
     --single-version-externally-managed
 # Directories used in windows build
 rm -rf $RPM_BUILD_ROOT/%{python2_sitelib}/%{srcname}/lib
 rm -rf $RPM_BUILD_ROOT/%{python2_sitelib}/%{srcname}/share
+%endif # with python2
 
 %check
+%if %{with python2}
 pushd $RPM_BUILD_ROOT/%{python2_sitelib}
 # There is no dictionary for language C, need to use en_US
 LANG=en_US.UTF-8 /usr/bin/nosetests-2.*
 popd
+%endif # with python2
 
 pushd $RPM_BUILD_ROOT/%{python3_sitelib}
 # There is no dictionary for language C, need to use en_US
 LANG=en_US.UTF-8 /usr/bin/nosetests-3.*
 popd
 
+%if %{with python2}
 %files -n python2-%{srcname}
 %doc README.txt TODO.txt
 %license LICENSE.txt
@@ -105,6 +121,7 @@ popd
 %{python2_sitelib}/%{srcname}/*/*.py
 %{python2_sitelib}/%{srcname}/*/*.py[co]
 %{python2_sitelib}/py%{srcname}-%{version}-py?.?.egg-info
+%endif # with python2
 
 %files -n python3-%{srcname}
 %doc README.txt TODO.txt
@@ -125,6 +142,9 @@ popd
 
 
 %changelog
+* Thu Mar 15 2018 Charalampos Stratakis <cstratak@redhat.com> - 2.0.0-3
+- Conditionalize the python2 subpackage
+
 * Fri Feb 09 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.0-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_28_Mass_Rebuild
 
