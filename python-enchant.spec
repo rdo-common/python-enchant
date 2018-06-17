@@ -12,7 +12,7 @@
 
 Name:           python-enchant
 Version:        2.0.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 License:        LGPLv2+
@@ -142,6 +142,9 @@ popd
 
 
 %changelog
+* Sun Jun 17 2018 Miro Hrončok <mhroncok@redhat.com> - 2.0.0-4
+- Rebuilt for Python 3.7
+
 * Thu Mar 15 2018 Charalampos Stratakis <cstratak@redhat.com> - 2.0.0-3
 - Conditionalize the python2 subpackage
 
