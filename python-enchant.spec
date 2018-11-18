@@ -12,7 +12,7 @@
 
 Name:           python-enchant
 Version:        2.0.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 License:        LGPLv2+
@@ -100,13 +100,13 @@ rm -rf $RPM_BUILD_ROOT/%{python2_sitelib}/%{srcname}/share
 %if %{with python2}
 pushd $RPM_BUILD_ROOT/%{python2_sitelib}
 # There is no dictionary for language C, need to use en_US
-LANG=en_US.UTF-8 /usr/bin/nosetests-2.*
+LANG=C.UTF-8 nosetests-2
 popd
 %endif # with python2
 
 pushd $RPM_BUILD_ROOT/%{python3_sitelib}
 # There is no dictionary for language C, need to use en_US
-LANG=en_US.UTF-8 /usr/bin/nosetests-3.*
+nosetests-3
 popd
 
 %if %{with python2}
@@ -142,6 +142,10 @@ popd
 
 
 %changelog
+* Sun Nov 18 2018 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2.0.0-6
+- Drop explicit locale setting for python3, use C.UTF-8 for python2
+  See https://fedoraproject.org/wiki/Changes/Remove_glibc-langpacks-all_from_buildroot
+
 * Sat Jul 14 2018 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.0-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
 
