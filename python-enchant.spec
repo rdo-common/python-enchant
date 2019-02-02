@@ -12,7 +12,7 @@
 
 Name:           python-enchant
 Version:        2.0.0
-Release:        6%{?dist}
+Release:        7%{?dist}
 Summary:        Python bindings for Enchant spellchecking library
 
 License:        LGPLv2+
@@ -142,6 +142,9 @@ popd
 
 
 %changelog
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
 * Sun Nov 18 2018 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 2.0.0-6
 - Drop explicit locale setting for python3, use C.UTF-8 for python2
   See https://fedoraproject.org/wiki/Changes/Remove_glibc-langpacks-all_from_buildroot
