@@ -8,6 +8,7 @@
 %bcond_with python2
 %else
 %bcond_without python2
+%bcond_with python3
 %endif
 
 Name:           python-enchant
@@ -46,6 +47,7 @@ PyEnchant is a spellchecking library for Python 2, based on the Enchant
 library by Dom Lachowicz.
 %endif # with python2
 
+%if %{with python3}
 %package -n python3-%{srcname}
 Summary:        Python 3 bindings for Enchant spellchecking library
 
@@ -61,26 +63,32 @@ Requires:       %{enchant_dep}
 %description -n python3-%{srcname}
 PyEnchant is a spellchecking library for Python 3, based on the Enchant
 library by Dom Lachowicz.
+%endif
 
 %prep
 %setup -q -n py%{srcname}-%{version}
 # Remove bundled egg-info
 rm -rf py%{srcname}.egg-info
 
+%if %{with python3}
 rm -rf %{py3dir}
 cp -a . %{py3dir}
 find %{py3dir} -name '*.py' | xargs sed -i '1s|^#!python|#!%{__python3}|'
+%endif
 
 %build
 %if %{with python2}
 CFLAGS="$RPM_OPT_FLAGS" %py2_build
 %endif # with python2
 
+%if %{with python3}
 pushd %{py3dir}
 CFLAGS="$RPM_OPT_FLAGS" %py3_build
 popd
+%endif
 
 %install
+%if %{with python3}
 pushd %{py3dir}
 %py3_install \
     --single-version-externally-managed
@@ -88,6 +96,7 @@ pushd %{py3dir}
 rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/%{srcname}/lib
 rm -rf $RPM_BUILD_ROOT/%{python3_sitelib}/%{srcname}/share
 popd
+%endif
 %if %{with python2}
 %py2_install \
     --single-version-externally-managed
@@ -100,14 +109,21 @@ rm -rf $RPM_BUILD_ROOT/%{python2_sitelib}/%{srcname}/share
 %if %{with python2}
 pushd $RPM_BUILD_ROOT/%{python2_sitelib}
 # There is no dictionary for language C, need to use en_US
+%if 0%{?fedora} || 0%{?rhel} > 7
 LANG=C.UTF-8 nosetests-2
+%else
+# C.UTF-8 not available in CentOS glibc-common
+LANG=en_US.UTF-8 nosetests
+%endif
 popd
 %endif # with python2
 
+%if %{with python3}
 pushd $RPM_BUILD_ROOT/%{python3_sitelib}
 # There is no dictionary for language C, need to use en_US
 nosetests-3
 popd
+%endif
 
 %if %{with python2}
 %files -n python2-%{srcname}
@@ -123,6 +139,7 @@ popd
 %{python2_sitelib}/py%{srcname}-%{version}-py?.?.egg-info
 %endif # with python2
 
+%if %{with python3}
 %files -n python3-%{srcname}
 %doc README.txt TODO.txt
 %license LICENSE.txt
@@ -139,6 +156,7 @@ popd
 %{python3_sitelib}/%{srcname}/tokenize/*.py
 %{python3_sitelib}/%{srcname}/tokenize/__pycache__/*.py[co]
 %{python3_sitelib}/py%{srcname}-%{version}-py?.?.egg-info
+%endif
 
 
 %changelog
